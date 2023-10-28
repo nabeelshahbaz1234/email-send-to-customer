@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="email_section_no_product_email_template" label="Product Not Available Template" file="no_product_email.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+    <template id="email_section_incomplete_email_template" label="Incomplete Order Email Template" file="incomplete_order_email_template.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+    <template id="email_section_pending_email_template" label="Pending Payment Template" file="pending_payment_template.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+    <template id="email_section_unconfirmed_email_template" label="Unconfirmed Email" file="unconfirmed_order_email.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+    <template id="email_section_canceled_email_template" label="Canceled Email COD" file="canceled_order_email.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+    <template id="email_section_canceled_new_email_template" label="Canceled Email PAY" file="canceled_order_pay_email.html" type="html" module="RLTSquare_OrderStatusChangeEmailSender" area="frontend"/>
+</config>

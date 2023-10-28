@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="order_cancel_after">
+        <observer name="Canceled_Email_Send" instance="RLTSquare\OrderStatusChangeEmailSender\Observer\CanceledEmailSend" />
+    </event>
+
+    <event name="sales_order_save_after">
+        <observer name="Order_Status_Change_Email" instance="RLTSquare\OrderStatusChangeEmailSender\Observer\OrderStatusEmailSend" />
+    </event>
+</config>

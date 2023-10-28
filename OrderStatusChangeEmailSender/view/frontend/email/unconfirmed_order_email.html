@@ -1,0 +1,179 @@
+<!--@subject {{trans "Your Order is Unconfirmed."}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var note.getEmailCustomerNote()":"Email Order Note",
+"var billing.getBillingAddress().getName()":"Guest Customer Name",
+"var create.getCreatedAtFormatted(1)":"Order Created At (datetime)",
+"var increment_id.increment_id":"Order Id",
+"layout handle=\"sales_email_order_items\" order=$order area=\"frontend\"":"Order Items Grid",
+"var payment_html|raw":"Payment Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var description.getShippingDescription()":"Shipping Description",
+"var shipping_msg":"Shipping message",
+"var custom_status_message":"Custom Message"
+} @-->
+{{template config_path="design/email/header_template"}}{{layout handle="preheader_section" area="frontend"}}{{layout handle="menu_line" area="frontend"}}
+{{layout handle="order_markup" order=$order area="frontend"}}
+<table align="center" style="background-color:#000; text-align:center; width: 660px">
+    <tbody>
+    <tr>
+        <td class="dark"  style="padding-bottom:8px; padding-top:5px; background-color:#000">
+            <h3 style="text-align: center; text-transform: uppercase;">
+
+            </h3>
+        </td>
+    </tr>
+    <tr>
+        <td class="dark" align="center" style="padding-bottom:0px; background-color:#000">
+            <h1 style="text-align: center; margin: 0 !important">
+                {{trans 'Your Order is unconfirmed!'}}
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td class="dark" align="center" style="padding-bottom:8px; background-color:#000">
+            <h3 style="text-align: center;">
+                {{trans 'ORDER NUMBER: <span class="no-link">%increment_id</span>' increment_id=$order.increment_id |raw}}
+            </h3>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table align="center" style="padding-bottom:5px; padding-top:20px; width: 660px; ">
+    <tbody>
+    <tr>
+        <td style="margin-left: 0px">
+            <p>
+            <h2 style="margin-top:25px;margin-bottom:20px;color:#000000;font-family:Arial,sans-serif,Helvetica,sans-serif;font-weight:600;font-size:inherit;font-style:inherit;line-height:inherit;letter-spacing:1px;text-align:center;margin:0 0 20px 0;color: black;">
+
+            </h2>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="margin-left: 0px">
+            <h2 style="margin-top:25px;margin-bottom:20px;color:#000000;font-family:Arial,sans-serif,Helvetica,sans-serif;font-weight:600;font-size:inherit;font-style:inherit;line-height:inherit;letter-spacing:1px;text-align:center;margin:0 0 20px 0;color: red;">
+            </h2>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table align="center" style="padding-bottom:5px; padding-top:20px; width: 660px">
+    <tbody>
+
+    <tr>
+        <td style="margin-left: 0px"><p>{{var custom_status_message}}</p</td>
+    </tr>
+    <td style="margin-left: 0px">
+        <p>
+            {{trans 'You can view the entire status of your order by checking <a href="%account_url">your account</a>.' account_url=$this.getUrl($store,'customer/account/',[_nosid:1]) |raw}}
+        </p>
+    </td>
+    </tr>
+    <tr>
+        <td style="margin-left: 0px">
+            <p>
+                {{trans 'If you have questions about your order, you can email us at <a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table style="width: 660px">
+    <tr class="email-information">
+        <td>
+            {{depend note.getEmailCustomerNote()}}
+            <table class="message-info">
+                <tr>
+                    <td>
+                        {{var note.getEmailCustomerNote()|escape|nl2br}}
+                    </td>
+                </tr>
+            </table>
+            {{/depend}}
+
+            <table class="email-items">
+                <thead>
+                <tr>
+                    <th class="item-info">{{trans "Image"}}</th>
+                    <th class="item-info">{{trans "Items"}}</th>
+                    <th class="item-info">{{trans "Product Sku"}}</th>
+                    <th class="item-info">{{trans "Price"}}</th>
+                    <th class="item-info">{{trans "Qty"}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{for item in items}}
+                <tr>
+                    <td> <img src="{{var item.product_image}}"></td>
+                    <td> {{var item.name}}</td>
+                    <td> {{var item.sku}}</td>
+                    <td> {{var item.price}}</td>
+                    <td> {{var item.qty_ordered}}</td>
+                </tr>
+                {{/for}}
+                </tbody>
+            </table>
+            <hr>
+            <ul style="text-align: right">
+                <p>Sub Total: {{var sub_total}}</p>
+                <p>Shipping & Handling: {{var shipping_amount}}</p>
+                <p>Discount Total: {{var discount_amount}}</p>
+                <h2>Grand Total: {{var grand_total}}</h2>
+            </ul>
+
+            <table class="order-details" style="border-top: 5px solid #000000">
+                <tr>
+                    <td class="address-details" style="padding-top: 60px !important">
+                        <h3>{{trans "BILLING ADDRESS"}}</h3>
+                        <p>{{var formattedBillingAddress|raw}}</p>
+                    </td>
+                    {{depend virtual.getIsNotVirtual()}}
+                    <td class="address-details" style="padding-top: 60px !important">
+                        <h3>{{trans "SHIPPING ADDRESS"}}</h3>
+                        <p>{{var formattedShippingAddress|raw}}</p>
+                    </td>
+                    {{/depend}}
+                </tr>
+                <tr>
+                    <td class="method-info wp-method-info" style="padding-bottom: 60px !important">
+                        <h3>{{trans "PAYMENT METHOD"}}</h3>
+                        {{var payment_html|raw}}
+                    </td>
+                    {{depend virtual.getIsNotVirtual()}}
+                    <td class="method-info" style="padding-bottom: 60px !important">
+                        <h3>{{trans "SHIPPING METHOD"}}</h3>
+                        <p>{{var description.getShippingDescription()}}</p>
+                        {{if shipping_msg}}
+                        <p>{{var shipping_msg}}</p>
+                        {{/if}}
+                    </td>
+                    {{/depend}}
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
+                            <tr>
+                                <td align="center" style="padding: 8px 0 !important">
+                                    <a href="{{var this.getUrl($store,'customer/account/',[_nosid:1])}}" target="_blank" style="font-weight: bold">{{trans "VIEW ORDER"}}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding-top: 35px">
+            {{block class="Magento\Cms\Block\Block" area="frontend" block_id="weltpixel_custom_block_returns"}}
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}
